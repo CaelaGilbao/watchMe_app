@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "715350488415",
+    "project_id": "watch-me2",
+    "storage_bucket": "watch-me2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715350488415:android:6afbdf3821c12bc34ff2ea",
+        "android_client_info": {
+          "package_name": "com.example.watch_me"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4B6ATiGkWG-lWdyDTeg6FjWTUOKTehJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
