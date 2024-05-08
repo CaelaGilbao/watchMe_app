@@ -9,6 +9,7 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color bgColor = Color(0xFF021B3A);
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 27),
       color: bgColor,

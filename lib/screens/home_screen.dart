@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:watch_me/components/navigation_menu.dart';
 import 'package:watch_me/functions/bottom_nav_bar_bloc.dart';
-import 'package:watch_me/tab/movie_tab.dart';
-import 'package:watch_me/tab/series_tab.dart';
+import 'package:watch_me/tab/movie%20tab/movie_tab.dart';
+import 'package:watch_me/tab/series%20tab/series_tab.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -17,18 +19,18 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     Color textColor = Color(0xFFFC6736);
     Color bgColor = Color(0xFF021B3A);
-    Color unselectedTab = Color(0xfffff);
+    Color unselectedTab = Color(0xFF24528A);
 
     return Scaffold(
       body: Container(
         color: bgColor,
         child: Column(
           children: [
-            SizedBox(height: 40), // Top margin
+            SizedBox(height: 50), // Top margin
             // Tab Header
             Padding(
               padding: const EdgeInsets.symmetric(
-                vertical: 30, // Reduced vertical padding
+                vertical: 20, // Reduced vertical padding
               ),
               child: Text(
                 'watchMe', // Tab Header
@@ -42,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // Tab Body
             Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: 20, vertical: 10), // Adjusted vertical padding
+                  horizontal: 40, vertical: 10), // Adjusted vertical padding
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
