@@ -15,7 +15,7 @@ class _MovieTabState extends State<MovieTab> {
   late Future<List<Movie>> popularMovies;
   late Future<List<Movie>> topRatedMovies;
   late Future<List<Movie>> nowPlayingMovies;
-  late Future<List<Movie>> discoverMovies;
+  //late Future<List<Movie>> discoverMovies;
 
   @override
   void initState() {
@@ -60,6 +60,8 @@ class _MovieTabState extends State<MovieTab> {
       child: InkWell(
         onTap: onTap, // Invoke the onTap callback when tapped
         child: Container(
+          height: 150,
+          width: 200,
           decoration: BoxDecoration(
             color: Color(0xFF153660),
             borderRadius: BorderRadius.circular(8),

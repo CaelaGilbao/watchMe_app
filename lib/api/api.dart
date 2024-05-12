@@ -26,6 +26,49 @@ class Api {
   final topRated2ApiUrl =
       "https://api.themoviedb.org/3/tv/top_rated?api_key=$apiKey";
 
+  Future<List<String>> getSearchSuggestions(String query) async {
+    final List<String> suggestions = [];
+
+    suggestions.addAll(await searchMovies(query));
+    suggestions.addAll(await searchSeries(query));
+
+    // Return unique suggestions
+    return suggestions.toSet().toList();
+  }
+
+  Future<List<String>> searchMovies(String query) async {
+    final response = await http.get(Uri.parse(
+        'https://api.themoviedb.org/3/search/movie?api_key=$apiKey&query=$query'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body)['results'];
+
+      // Extract titles from movie objects
+      final List<String> titles =
+          data.map((movie) => Movie.fromMap(movie).title).toList();
+      return titles;
+    } else {
+      throw Exception('Failed to search movies');
+    }
+  }
+
+  Future<List<String>> searchSeries(String query) async {
+    final response = await http.get(Uri.parse(
+        'https://api.themoviedb.org/3/search/tv?api_key=$apiKey&query=$query'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body)['results'];
+
+      // Extract names from series objects
+      final List<String> names =
+          data.map((series) => Series.fromMap(series).title).toList();
+      return names;
+    } else {
+      throw Exception('Failed to search series');
+    }
+  }
+
+  //Movies
   Future<List<Movie>> getUpcomingMovies() async {
     final response = await http.get(Uri.parse(upComingApiUrl));
 
@@ -78,6 +121,7 @@ class Api {
     }
   }
 
+  //Series
   Future<List<Series>> getairingTodaySeries() async {
     final response = await http.get(Uri.parse(airingTodayApiUrl));
 

@@ -62,6 +62,8 @@ class _SeriesTabState extends State<SeriesTab> {
       child: InkWell(
         onTap: onTap, // Invoke the onTap callback when tapped
         child: Container(
+          height: 150,
+          width: 200,
           decoration: BoxDecoration(
             color: Color(0xFF153660),
             borderRadius: BorderRadius.circular(8),

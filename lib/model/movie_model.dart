@@ -19,9 +19,9 @@ class Movie {
 
   factory Movie.fromMap(Map<String, dynamic> map) {
     return Movie(
-      id:map ['id'].toString(),
+      id: map['id'].toString(),
       title: map['title'],
-      backDropPath: map['backdrop_path'],
+      backDropPath: map['backdrop_path'] != null ? map['backdrop_path'] : '',
       overview: map['overview'],
       posterPath: map['poster_path'] != null
           ? 'https://image.tmdb.org/t/p/w500${map['poster_path']}'
