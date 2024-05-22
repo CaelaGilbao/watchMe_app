@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:watch_me/auth/login.dart';
 import 'package:watch_me/auth/register.dart';
+import 'package:watch_me/auth/set_profile_picture_screen.dart';
+import 'package:watch_me/auth/set_user_info_screen.dart';
 import 'package:watch_me/firebase_options.dart';
 import 'package:watch_me/functions/authFunction.dart';
 import 'package:watch_me/screens/home_screen.dart';
@@ -29,9 +31,11 @@ class MyApp extends StatelessWidget {
         'welcome': (context) => const Welcome(),
         'home': (context) => const HomeScreen(),
         'login': (context) => Login(),
-        'register': (context) => Register(),
+        'register': (context) => const Register(),
         'search': (context) => SearchScreen(),
         'profile': (context) => ProfileScreen(),
+        'setUserInfo': (context) => SetUserInfoScreen(),
+        'setProfilePicture': (context) => SetProfilePictureScreen(),
       },
     );
   }

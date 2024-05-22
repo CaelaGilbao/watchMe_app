@@ -6,11 +6,14 @@ import 'package:watch_me/api/api.dart';
 import 'package:watch_me/components/navigation_menu.dart';
 import 'package:watch_me/functions/bottom_nav_bar_bloc.dart';
 import 'package:watch_me/model/movie_model.dart';
+//import 'package:watch_me/model/search_result.dart';
 import 'package:watch_me/model/series_model.dart';
-import 'package:watch_me/tab/movie%20tab/movie_list_screen.dart';
-import 'package:watch_me/tab/series%20tab/series_list_screen.dart';
+import 'package:watch_me/screens/search_result_screen.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:watch_me/tab/movie%20tab/movie_list.dart';
+import 'package:watch_me/tab/series%20tab/series_list.dart';
 
 class SearchScreen extends StatefulWidget {
   final CollectionReference searchHistoryCollection =
@@ -26,15 +29,6 @@ class SearchScreen extends StatefulWidget {
         .orderBy('timestamp', descending: true)
         .snapshots();
   }
-}
-
-class SearchResult {
-  final List<Movie> movies;
-  final List<Series> series;
-
-  SearchResult({required this.movies, required this.series});
-
-  bool get hasResults => movies.isNotEmpty || series.isNotEmpty;
 }
 
 class SearchHistoryService {
@@ -53,32 +47,6 @@ class SearchHistoryService {
     }
   }
 }
-
-/*class SearchSuggestionsOverlay {
-  static OverlayEntry? _overlayEntry;
-
-  static void show(BuildContext context, Widget suggestionsWidget) {
-    _overlayEntry = OverlayEntry(
-      builder: (context) {
-        return Positioned(
-          top: MediaQuery.of(context).viewInsets.top + kToolbarHeight + 10,
-          left: 0,
-          right: 0,
-          child: Material(
-            elevation: 4,
-            child: suggestionsWidget,
-          ),
-        );
-      },
-    );
-    Overlay.of(context)?.insert(_overlayEntry!);
-  }
-
-  static void hide() {
-    _overlayEntry?.remove();
-    _overlayEntry = null;
-  }
-}*/
 
 class _SearchScreenState extends State<SearchScreen> {
   final BottomNavBarBloc _bottomNavBarBloc = BottomNavBarBloc();
@@ -106,10 +74,10 @@ class _SearchScreenState extends State<SearchScreen> {
     popularMovies = Api().getPopularMovies();
     topRatedMovies = Api().getTopRatedMovies();
     nowPlayingMovies = Api().getUpcomingMovies();
-    airingTodaySeries = Api().getairingTodaySeries();
-    onTheAirSeries = Api().getairingTodaySeries();
-    popular2Series = Api().getairingTodaySeries();
-    topRated2Series = Api().getairingTodaySeries();
+    airingTodaySeries = Api().getAiringTodaySeries();
+    onTheAirSeries = Api().getOnTheAirSeries();
+    popular2Series = Api().getPopular2Series();
+    topRated2Series = Api().getTopRated2Series();
     searchSuggestions = Future.value([]);
 
     searchHistory = _getSearchHistory(userId);
@@ -123,12 +91,34 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _handleSearch(String query) {
-    // Check if the query is not empty and the "done" key is pressed
     if (query.isNotEmpty) {
-      // Get the current user ID
       final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-      // Save search history to Firestore using the user ID
       SearchHistoryService().addSearchHistory(userId, query);
+
+      Api().search(query).then((result) {
+        if (result.movies.isNotEmpty || result.series.isNotEmpty) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchResultScreen(
+                searchQuery: query,
+                movies: result.movies,
+                series: result.series,
+                //category: 'Search Result',
+              ),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('No results found for "$query"')),
+          );
+        }
+      }).catchError((error) {
+        print('Error fetching search results: $error');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error fetching search results')),
+        );
+      });
     }
   }
 
@@ -186,8 +176,8 @@ class _SearchScreenState extends State<SearchScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(
+        const Padding(
+          padding: EdgeInsets.fromLTRB(
               15.0, 0.0, 8.0, 4.0), // Adjust top and bottom padding
           child: Text(
             'Search History',
@@ -230,10 +220,10 @@ class _SearchScreenState extends State<SearchScreen> {
                             fontWeight: FontWeight.normal,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
-                        Icon(
+                        const Icon(
                           Icons.close,
                           color: Colors.white,
                           size: 17,
@@ -256,7 +246,7 @@ class _SearchScreenState extends State<SearchScreen> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Display a loading indicator while fetching suggestions
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           // Handle error gracefully
           return Text('Error: ${snapshot.error}');
@@ -269,8 +259,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: Text(
                           'Search Suggestions',
                           style: TextStyle(
@@ -283,17 +273,17 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                       ListView.separated(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: suggestions.length,
                         separatorBuilder: (context, index) =>
-                            Divider(color: Colors.grey),
+                            const Divider(color: Colors.grey),
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 0),
                             child: ListTile(
                               title: Text(
                                 suggestions[index],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.normal,
@@ -422,7 +412,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         'Search History Snapshot: ${snapshot.connectionState}');
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       // Display a loading indicator while fetching search history
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       // Handle error gracefully
                       print('Error fetching search history: ${snapshot.error}');
@@ -436,7 +426,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   },
                 ),
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 50),
                   child: Text(
                     'Trending',
                     style: TextStyle(
@@ -517,139 +507,6 @@ class _SearchScreenState extends State<SearchScreen> {
                       );
                     }
                   },
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 30),
-                  child: Text(
-                    'Browse All',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontFamily: 'Poppins',
-                      color: Color(0xFF8F8F8F),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: _buildCategoryMovies(
-                          'Now Playing',
-                          nowPlayingMovies,
-                          () => _navigateToMovieListScreen(
-                            context,
-                            'Now Playing',
-                            nowPlayingMovies,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: _buildCategoryMovies(
-                          'Upcoming',
-                          upcomingMovies,
-                          () => _navigateToMovieListScreen(
-                            context,
-                            'Upcoming',
-                            upcomingMovies,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: _buildCategoryMovies(
-                          'Popular (Movies)',
-                          popularMovies,
-                          () => _navigateToMovieListScreen(
-                            context,
-                            'Popular (Movies)',
-                            popularMovies,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: _buildCategoryMovies(
-                          'Top Rated (Movies)',
-                          topRatedMovies,
-                          () => _navigateToMovieListScreen(
-                            context,
-                            'Top Rated (Movies)',
-                            topRatedMovies,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 0),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: _buildCategorySeries(
-                          'Airing Today',
-                          airingTodaySeries,
-                          () => _navigateToSeriesListScreen(
-                            context,
-                            'Airing Today',
-                            airingTodaySeries,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: _buildCategorySeries(
-                          'On the Air',
-                          onTheAirSeries,
-                          () => _navigateToSeriesListScreen(
-                            context,
-                            'On the Air',
-                            onTheAirSeries,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: _buildCategorySeries(
-                          'Popular (Series)',
-                          popular2Series,
-                          () => _navigateToSeriesListScreen(
-                            context,
-                            'Popular (Series)',
-                            popular2Series,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: _buildCategorySeries(
-                          'Top Rated (Series)',
-                          topRated2Series,
-                          () => _navigateToSeriesListScreen(
-                            context,
-                            'Top Rated (Series)',
-                            topRated2Series,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ],
             ),
@@ -791,8 +648,10 @@ class _SearchScreenState extends State<SearchScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            MovieListScreen(category: category, movies: movies),
+        builder: (context) => MovieList(
+          category: category,
+          movies: movies,
+        ),
       ),
     );
   }
@@ -803,8 +662,10 @@ class _SearchScreenState extends State<SearchScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            SeriesListScreen(category: category, series: series),
+        builder: (context) => SeriesList(
+          category: category,
+          series: series,
+        ),
       ),
     );
   }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:watch_me/api/api.dart';
 import 'package:watch_me/model/series_model.dart';
-import 'package:watch_me/tab/series%20tab/series_list_screen.dart';
+import 'package:watch_me/tab/series%20tab/series_list.dart';
+import 'package:watch_me/screens/series_list_screen.dart';
 
 class SeriesTab extends StatefulWidget {
   const SeriesTab({Key? key}) : super(key: key);
@@ -18,10 +19,10 @@ class _SeriesTabState extends State<SeriesTab> {
 
   @override
   void initState() {
-    airingTodaySeries = Api().getairingTodaySeries();
-    onTheAirSeries = Api().getairingTodaySeries();
-    popular2Series = Api().getairingTodaySeries();
-    topRated2Series = Api().getairingTodaySeries();
+    airingTodaySeries = Api().getAiringTodaySeries();
+    onTheAirSeries = Api().getOnTheAirSeries();
+    popular2Series = Api().getPopular2Series();
+    topRated2Series = Api().getTopRated2Series();
 
     super.initState();
   }
@@ -116,8 +117,7 @@ class _SeriesTabState extends State<SeriesTab> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            SeriesListScreen(category: category, series: series),
+        builder: (context) => SeriesList(category: category, series: series),
       ),
     );
   }

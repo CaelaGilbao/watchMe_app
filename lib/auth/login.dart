@@ -24,15 +24,15 @@ class Login extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Sign In Failed'),
-            content: Text(
+            title: const Text('Sign In Failed'),
+            content: const Text(
                 'Failed to sign in. Please check your email and password.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -51,14 +51,14 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color bgColor = Color(0xFF021B3A);
-    Color textColor = Color(0xFFFC6736);
+    Color bgColor = const Color(0xFF021B3A);
+    Color textColor = const Color(0xFFFC6736);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: bgColor,
       body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(20, 100, 20, 30),
+        padding: const EdgeInsets.fromLTRB(20, 100, 20, 30),
         child: Form(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -73,8 +73,8 @@ class Login extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 30),
-              Padding(
+              const SizedBox(height: 30),
+              const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 60),
                 child: Text(
                   'Welcome back you’ve been missed!',
@@ -87,7 +87,7 @@ class Login extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
 
               //email textfield
               MyTextField(
@@ -95,7 +95,7 @@ class Login extends StatelessWidget {
                 hintText: 'Email',
                 obscureText: false,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               //password textfield
               MyTextField(
                 controller: passwordController,
@@ -103,7 +103,7 @@ class Login extends StatelessWidget {
                 obscureText: true,
                 showSuffixIcon: true,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Align(
@@ -112,7 +112,7 @@ class Login extends StatelessWidget {
                   onPressed: () {
                     // Navigate to forgot password screen or implement reset password functionality
                   },
-                  child: Text(
+                  child: const Text(
                     'Forgot your Password?',
                     style: TextStyle(
                       color: Colors.white,
@@ -123,7 +123,7 @@ class Login extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
 
@@ -131,7 +131,7 @@ class Login extends StatelessWidget {
                 onTap: () => signUserIn(context),
                 text: 'Sign In',
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
 
@@ -158,7 +158,7 @@ class Login extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(
+              const SizedBox(
                 height: 90,
               ),
 
@@ -191,8 +191,8 @@ class Login extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 40),
-              Row(
+              const SizedBox(height: 40),
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SquareTile(imagePath: 'assets/images/google_logo.png'),

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:watch_me/components/my_button.dart';
 import 'package:watch_me/components/my_textfield.dart';
-import 'package:watch_me/components/square_tile.dart'; // Import firebase_auth package
+import 'package:watch_me/components/square_tile.dart';
 
 // Your Register class definition...
 
 class Register extends StatefulWidget {
-  Register({Key? key}) : super(key: key);
+  const Register({Key? key}) : super(key: key);
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -47,16 +47,8 @@ class _RegisterState extends State<Register> {
       // User signed up successfully
       print('User signed up: ${userCredential.user!.email}');
 
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Signed up successfully! Login to continue.'),
-          duration: Duration(seconds: 5), // Adjust duration as needed
-        ),
-      );
-
-      // Navigate to the login screen
-      Navigator.pushNamed(context, 'login');
+      // Navigate to SetUserInfoScreen
+      Navigator.pushReplacementNamed(context, 'setUserInfo');
     } catch (e) {
       // An error occurred while signing up the user
       String errorMessage = 'An error occurred';
@@ -82,20 +74,20 @@ class _RegisterState extends State<Register> {
     }
   }
 
-  void navigateToLogin(BuildContext context) {
-    Navigator.pushNamed(context, 'login');
+  void navigateToUserInfo(BuildContext context) {
+    Navigator.pushNamed(context, 'setUserInfo');
   }
 
   @override
   Widget build(BuildContext context) {
-    Color bgColor = Color(0xFF021B3A);
-    Color textColor = Color(0xFFFC6736);
+    Color bgColor = const Color(0xFF021B3A);
+    Color textColor = const Color(0xFFFC6736);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: bgColor,
       body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(20, 100, 20, 30),
+        padding: const EdgeInsets.fromLTRB(20, 100, 20, 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -109,8 +101,8 @@ class _RegisterState extends State<Register> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10),
-            Padding(
+            const SizedBox(height: 10),
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: 40),
               child: Text(
                 'Create an account so you can explore all the movies and series that you may like',
@@ -123,14 +115,14 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             MyTextField(
               controller: emailController,
               hintText: 'Email',
               obscureText: false,
               errorText: emailError,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             MyTextField(
               controller: passwordController,
               hintText: 'Password',
@@ -138,7 +130,7 @@ class _RegisterState extends State<Register> {
               showSuffixIcon: true,
               errorText: passwordError,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             MyTextField(
               controller: confirmPasswordController,
               hintText: 'Confirm password',
@@ -146,18 +138,18 @@ class _RegisterState extends State<Register> {
               showSuffixIcon: true,
               errorText: confirmPasswordError,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             MyButton(
               onTap: () => signUpUser(context),
               text: 'Sign Up',
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             GestureDetector(
-              onTap: () => navigateToLogin(context),
+              onTap: () => navigateToUserInfo(context),
               child: Container(
                 padding: const EdgeInsets.all(13),
                 margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -178,7 +170,7 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 90,
             ),
             Padding(
@@ -210,8 +202,8 @@ class _RegisterState extends State<Register> {
                 ],
               ),
             ),
-            SizedBox(height: 40),
-            Row(
+            const SizedBox(height: 40),
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SquareTile(imagePath: 'assets/images/google_logo.png'),

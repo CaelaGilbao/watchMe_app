@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:watch_me/api/api.dart';
 import 'package:watch_me/model/movie_model.dart';
-import 'package:watch_me/tab/movie%20tab/movie_list_screen.dart';
+import 'package:watch_me/tab/movie%20tab/movie_list.dart';
+import 'package:watch_me/screens/movie_list_screen.dart';
 
 class MovieTab extends StatefulWidget {
   const MovieTab({Key? key}) : super(key: key);
@@ -115,7 +116,7 @@ class _MovieTabState extends State<MovieTab> {
       context,
       MaterialPageRoute(
         builder: (context) =>
-            MovieListScreen(category: category, movies: movies),
+            MovieList(category: category, movies: movies),
       ),
     );
   }

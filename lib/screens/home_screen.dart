@@ -17,16 +17,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor = Color(0xFFFC6736);
-    Color bgColor = Color(0xFF021B3A);
-    Color unselectedTab = Color(0xFF24528A);
+    Color textColor = const Color(0xFFFC6736);
+    Color bgColor = const Color(0xFF021B3A);
+    Color unselectedTab = const Color(0xFF24528A);
 
     return Scaffold(
       body: Container(
         color: bgColor,
         child: Column(
           children: [
-            SizedBox(height: 50), // Top margin
+            const SizedBox(height: 50), // Top margin
             // Tab Header
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -57,12 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Container(
                       width: 125, // Set tab container width
                       height: 30, // Set tab container height
-                      padding: EdgeInsets.symmetric(vertical: 0),
+                      padding: const EdgeInsets.symmetric(vertical: 0),
                       decoration: BoxDecoration(
                         color: _selectedIndex == 0 ? textColor : unselectedTab,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'Movies', // Tab Header
                           style: TextStyle(
@@ -81,12 +81,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Container(
                       width: 125, // Set tab container width
                       height: 30, // Set tab container height
-                      padding: EdgeInsets.symmetric(vertical: 0),
+                      padding: const EdgeInsets.symmetric(vertical: 0),
                       decoration: BoxDecoration(
                         color: _selectedIndex == 1 ? textColor : unselectedTab,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'Series', // Tab Header
                           style: TextStyle(
@@ -100,7 +100,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Expanded(
-              child: _selectedIndex == 0 ? MovieTab() : SeriesTab(), // Tab Body
+              child: _selectedIndex == 0
+                  ? const MovieTab()
+                  : const SeriesTab(), // Tab Body
             ),
           ],
         ),

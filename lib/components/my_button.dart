@@ -12,7 +12,7 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor = Color(0xFFFC6736);
+    Color textColor = const Color(0xFFFC6736);
 
     return GestureDetector(
       onTap: onTap,
@@ -26,7 +26,7 @@ class MyButton extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'Poppins',
               fontSize: 18,

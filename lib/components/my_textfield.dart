@@ -5,7 +5,9 @@ class MyTextField extends StatefulWidget {
   final String hintText;
   final bool obscureText;
   final bool showSuffixIcon;
-  final String? errorText; // New parameter to display error message
+  final String? errorText; // Parameter to display error message
+  final TextInputType? keyboardType; // New parameter for keyboard type
+  final bool enabled; // New parameter for enabling/disabling the field
 
   const MyTextField({
     Key? key,
@@ -14,6 +16,8 @@ class MyTextField extends StatefulWidget {
     required this.obscureText,
     this.showSuffixIcon = false,
     this.errorText, // Initialize errorText parameter
+    this.keyboardType, // Initialize keyboardType parameter
+    this.enabled = true, // Initialize enabled parameter with default value
   }) : super(key: key);
 
   @override
@@ -37,13 +41,17 @@ class _MyTextFieldState extends State<MyTextField> {
         TextField(
           controller: widget.controller,
           obscureText: _obscureText,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
+          keyboardType: widget.keyboardType, // Use keyboardType parameter
+          enabled: widget.enabled, // Use enabled parameter
           decoration: InputDecoration(
             filled: true,
-            fillColor: Color(0xFF24528A),
+            fillColor: const Color(0xFF24528A),
             hintText: widget.hintText,
             hintStyle: TextStyle(
               color: Colors.white.withOpacity(0.5),
+              fontFamily: 'Poppins',
+              fontSize: 15,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
@@ -51,7 +59,7 @@ class _MyTextFieldState extends State<MyTextField> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.white),
+              borderSide: const BorderSide(color: Color(0xFFFC6736)),
             ),
             suffixIcon: widget.showSuffixIcon
                 ? IconButton(
@@ -68,10 +76,10 @@ class _MyTextFieldState extends State<MyTextField> {
         ),
         if (widget.errorText != null) // Display error message if provided
           Padding(
-            padding: EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.only(top: 8),
             child: Text(
               widget.errorText!,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.red,
                 fontSize: 12,
               ),

@@ -3,21 +3,21 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:watch_me/model/movie_model.dart';
+import 'package:watch_me/model/series_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class MovieListScreen extends StatefulWidget {
+class SeriesList extends StatefulWidget {
   final String category;
-  final List<Movie> movies;
+  final List<Series> series;
 
-  const MovieListScreen({
+  const SeriesList({
     Key? key,
     required this.category,
-    required this.movies,
+    required this.series,
   }) : super(key: key);
 
   @override
-  _MovieListScreenState createState() => _MovieListScreenState();
+  _SeriesListState createState() => _SeriesListState();
 
   static const Map<int, String> genreMap = {
     28: 'Action',
@@ -42,7 +42,7 @@ class MovieListScreen extends StatefulWidget {
   };
 }
 
-class _MovieListScreenState extends State<MovieListScreen> {
+class _SeriesListState extends State<SeriesList> {
   List<int> selectedGenres = [];
 
   @override
@@ -86,13 +86,13 @@ class _MovieListScreenState extends State<MovieListScreen> {
             Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.only(bottom: 10),
-                itemCount: _filteredMovies.length,
+                itemCount: _filteredSeries.length,
                 separatorBuilder: (context, index) => const Divider(
                   color: Color(0xFF6F6F6F),
                 ),
                 itemBuilder: (context, index) {
-                  var movie = _filteredMovies[index];
-                  return MovieTile(movie: movie);
+                  var series = _filteredSeries[index];
+                  return SeriesTile(series: series);
                 },
               ),
             ),
@@ -108,7 +108,7 @@ class _MovieListScreenState extends State<MovieListScreen> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children: MovieListScreen.genreMap.entries
+          children: SeriesList.genreMap.entries
               .map(
                 (entry) => Padding(
                   padding: const EdgeInsets.fromLTRB(5, 5, 2, 5),
@@ -144,31 +144,31 @@ class _MovieListScreenState extends State<MovieListScreen> {
     );
   }
 
-  List<Movie> get _filteredMovies {
+  List<Series> get _filteredSeries {
     if (selectedGenres.isEmpty) {
-      return widget.movies;
+      return widget.series;
     } else {
-      return widget.movies
-          .where((movie) =>
-              movie.genreIds.any((genreId) => selectedGenres.contains(genreId)))
+      return widget.series
+          .where((series) => series.genreIds
+              .any((genreId) => selectedGenres.contains(genreId)))
           .toList();
     }
   }
 }
 
-class MovieTile extends StatefulWidget {
-  final Movie movie;
+class SeriesTile extends StatefulWidget {
+  final Series series;
 
-  const MovieTile({
+  const SeriesTile({
     Key? key,
-    required this.movie,
+    required this.series,
   }) : super(key: key);
 
   @override
-  _MovieTileState createState() => _MovieTileState();
+  _SeriesTileState createState() => _SeriesTileState();
 }
 
-class _MovieTileState extends State<MovieTile> {
+class _SeriesTileState extends State<SeriesTile> {
   bool _isExpanded = false;
 
   @override
@@ -178,7 +178,7 @@ class _MovieTileState extends State<MovieTile> {
       child: Column(
         children: [
           ListTile(
-            leading: _buildFavoriteIcon(widget.movie.id),
+            leading: _buildFavoriteIcon(widget.series.id.toString()),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -205,13 +205,16 @@ class _MovieTileState extends State<MovieTile> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.movie.title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Poppins',
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    width: 250,
+                    child: Text(
+                      widget.series.title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Poppins',
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -220,7 +223,7 @@ class _MovieTileState extends State<MovieTile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _getYear(widget.movie.releaseDate),
+                    _getYear(widget.series.releaseDate),
                     style: const TextStyle(
                       color: Color(0xFF4984CD),
                       fontSize: 12,
@@ -229,7 +232,7 @@ class _MovieTileState extends State<MovieTile> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  _getGenres(widget.movie.genreIds),
+                  _getGenres(widget.series.genreIds),
                 ],
               ),
               leading: SizedBox(
@@ -238,19 +241,19 @@ class _MovieTileState extends State<MovieTile> {
                 child: AspectRatio(
                   aspectRatio: 2 / 3,
                   child: Image.network(
-                    widget.movie.posterPath,
+                    widget.series.posterPath,
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
             ),
-          if (_isExpanded) _buildExpandedMovieDetails(widget.movie),
+          if (_isExpanded) _buildExpandedSeriesDetails(widget.series),
         ],
       ),
     );
   }
 
-  Widget _buildExpandedMovieDetails(Movie movie) {
+  Widget _buildExpandedSeriesDetails(Series series) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
@@ -262,7 +265,7 @@ class _MovieTileState extends State<MovieTile> {
             child: AspectRatio(
               aspectRatio: 2 / 3,
               child: Image.network(
-                movie.posterPath,
+                series.posterPath,
                 fit: BoxFit.cover,
               ),
             ),
@@ -273,7 +276,7 @@ class _MovieTileState extends State<MovieTile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  movie.title,
+                  series.title,
                   style: const TextStyle(
                     color: Colors.white,
                     fontFamily: 'Poppins',
@@ -283,7 +286,7 @@ class _MovieTileState extends State<MovieTile> {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  _getYear(movie.releaseDate),
+                  _getYear(series.releaseDate),
                   style: const TextStyle(
                     color: Color(0xFF4984CD),
                     fontSize: 12,
@@ -293,12 +296,12 @@ class _MovieTileState extends State<MovieTile> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  movie.overview,
+                  series.overview,
                   style: const TextStyle(
                       color: Colors.white, fontStyle: FontStyle.italic),
                 ),
                 const SizedBox(height: 15),
-                _getGenres(movie.genreIds),
+                _getGenres(series.genreIds),
               ],
             ),
           ),
@@ -307,9 +310,9 @@ class _MovieTileState extends State<MovieTile> {
     );
   }
 
-  Widget _buildFavoriteIcon(String movieId) {
+  Widget _buildFavoriteIcon(String seriesId) {
     return FutureBuilder<bool>(
-      future: _isMovieFavorite(movieId),
+      future: _isSeriesFavorite(seriesId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
@@ -324,9 +327,9 @@ class _MovieTileState extends State<MovieTile> {
             onPressed: () {
               setState(() {
                 if (isFavorite) {
-                  _removeFromWatchlist(movieId);
+                  _removeFromWatchlist(seriesId);
                 } else {
-                  _addToWatchlist(movieId);
+                  _addToWatchlist(seriesId);
                 }
               });
             },
@@ -336,7 +339,7 @@ class _MovieTileState extends State<MovieTile> {
     );
   }
 
-  Future<bool> _isMovieFavorite(String movieId) async {
+  Future<bool> _isSeriesFavorite(String seriesId) async {
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
     if (currentUserId != null) {
       DatabaseReference watchlistRef = FirebaseDatabase.instance
@@ -347,7 +350,7 @@ class _MovieTileState extends State<MovieTile> {
 
       // Use once().then() to get the DataSnapshot from the event
       DataSnapshot snapshot = await watchlistRef
-          .child(movieId)
+          .child(seriesId)
           .once()
           .then((event) => event.snapshot);
 
@@ -362,20 +365,20 @@ class _MovieTileState extends State<MovieTile> {
     }
   }
 
-  Future<void> _addToWatchlist(String movieId) async {
+  Future<void> _addToWatchlist(String seriesId) async {
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
     if (currentUserId != null) {
       DatabaseReference watchlistRef = FirebaseDatabase.instance
           .reference()
           .child('users')
           .child(currentUserId)
-          .child('watchlist');
+          .child('watchlists');
 
-      await watchlistRef.child(movieId).set(true);
+      await watchlistRef.child(seriesId).set(true);
     }
   }
 
-  Future<void> _removeFromWatchlist(String movieId) async {
+  Future<void> _removeFromWatchlist(String seriesId) async {
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
     if (currentUserId != null) {
       DatabaseReference watchlistRef = FirebaseDatabase.instance
@@ -384,12 +387,12 @@ class _MovieTileState extends State<MovieTile> {
           .child(currentUserId)
           .child('watchlist');
 
-      await watchlistRef.child(movieId).remove();
+      await watchlistRef.child(seriesId).remove();
     }
   }
 
   Widget _getGenres(List<int> genreIds) {
-    Map<int, String> genreMap = MovieListScreen.genreMap;
+    Map<int, String> genreMap = SeriesList.genreMap;
     List<Widget> genreWidgets = [];
     for (int genreId in genreIds) {
       if (genreMap.containsKey(genreId)) {

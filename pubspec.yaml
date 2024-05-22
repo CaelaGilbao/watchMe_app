@@ -19,11 +19,15 @@ dependencies:
   intl: ^0.19.0
   carousel_slider: ^4.0.0
   shared_preferences: ^2.2.3
+  image_picker: ^1.0.8
+  permission_handler: ^10.2.0
+  firebase_storage: ^11.6.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+
 
 flutter:
   uses-material-design: true
@@ -32,6 +36,7 @@ flutter:
     - assets/images/google_logo.png
     - assets/images/fb_logo.png
     - assets/images/ios_logo.png
+    - assets/images/default_profile.jpg
     
   fonts:
     - family: Poppins

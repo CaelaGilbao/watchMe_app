@@ -5,8 +5,8 @@ class Welcome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color bgColor = Color(0xFF021B3A);
-    Color textColor = Color(0xFFFC6736);
+    Color bgColor = const Color(0xFF021B3A);
+    Color textColor = const Color(0xFFFC6736);
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -23,9 +23,9 @@ class Welcome extends StatelessWidget {
                     height: 339,
                     width: 327,
                   ),
-                  SizedBox(height: 20), // Spacer between Image and Text
+                  const SizedBox(height: 20), // Spacer between Image and Text
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       'Discover and Share Your Favorites!',
                       textAlign: TextAlign.center,
@@ -37,8 +37,8 @@ class Welcome extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10), // Spacer between Image and Text
-                  Padding(
+                  const SizedBox(height: 10), // Spacer between Image and Text
+                  const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 60),
                     child: Text(
                       'Your Ultimate Guide to Movies and Series, All in One Place!',
@@ -51,11 +51,11 @@ class Welcome extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 100),
+                  const SizedBox(height: 100),
                   Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 35),
+                        padding: const EdgeInsets.only(left: 35),
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.pushNamed(context, 'login');
@@ -66,7 +66,7 @@ class Welcome extends StatelessWidget {
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Colors.white),
                             minimumSize:
-                                MaterialStateProperty.all<Size>(Size(160, 60)),
+                                MaterialStateProperty.all<Size>(const Size(160, 60)),
                             shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
@@ -74,7 +74,7 @@ class Welcome extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             'Login',
                             style: TextStyle(
                               fontFamily: 'Poppins',
@@ -84,7 +84,7 @@ class Welcome extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.pushNamed(context, 'register');
@@ -95,7 +95,7 @@ class Welcome extends StatelessWidget {
                           foregroundColor:
                               MaterialStateProperty.all<Color>(Colors.white),
                           minimumSize:
-                              MaterialStateProperty.all<Size>(Size(160, 60)),
+                              MaterialStateProperty.all<Size>(const Size(160, 60)),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
@@ -103,7 +103,7 @@ class Welcome extends StatelessWidget {
                             ),
                           ),
                         ),
-                        child: Text(
+                        child: const Text(
                           'Register',
                           style: TextStyle(
                             fontFamily: 'Poppins',
